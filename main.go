@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"./router"
+	"github.com/bill-mansfield/todo-go/server/router"
 )
 
 func main() {
