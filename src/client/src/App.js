@@ -1,16 +1,18 @@
 import React from "react";
-// import the Container Component from the semantic-ui-react
+import "./App.css";
 import { Container } from "semantic-ui-react";
-// import the ToDoList component
-import ToDoList from "../src/components/ToDoList";
+import ToDoList from "./To-Do-List";
+import { Tasks } from "./Tasks";
 
 function App() {
   return (
     <div>
       <Container>
         <ToDoList />
+        <Tasks />
       </Container>
     </div>
   );
 }
+
 export default App;

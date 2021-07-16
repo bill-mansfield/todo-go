@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
 
 let endpoint = "http://localhost:8080";
 
@@ -9,7 +10,7 @@ class ToDoList extends Component {
 
     this.state = {
       task: "",
-      items: []
+      items: [],
     };
   }
 
@@ -17,31 +18,32 @@ class ToDoList extends Component {
     this.getTask();
   }
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
   onSubmit = () => {
     let { task } = this.state;
+    // console.log("pRINTING task", this.state.task);
     if (task) {
       axios
         .post(
           endpoint + "/api/task",
           {
-            task
+            task,
           },
           {
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
           }
         )
-        .then(res => {
+        .then((res) => {
           this.getTask();
           this.setState({
-            task: ""
+            task: "",
           });
           console.log(res);
         });
@@ -49,105 +51,110 @@ class ToDoList extends Component {
   };
 
   getTask = () => {
-    axios.get(endpoint + "/api/task").then(res => {
-      console.log(res);
+    axios.get(endpoint + "/api/task").then((res) => {
       if (res.data) {
         this.setState({
-          items: res.data.map(item => {
+          items: res.data.map((item) => {
             let color = "yellow";
+            let style = {
+              wordWrap: "break-word",
+            };
 
             if (item.status) {
               color = "green";
+              style["textDecorationLine"] = "line-through";
             }
-            return (
-              <div key={item._id} style={{backgroundColor: color}} fluid>
-                <div>
-                  <div textAlign="left">
-                    <div style={{ wordWrap: "break-word" }}>{item.task}</div>
-                  </div>
 
-                  <div textAlign="right">
-                    <button
+            return (
+              <Card key={item._id} color={color} fluid>
+                <Card.Content>
+                  <Card.Header textAlign="left">
+                    <div style={style}>{item.task}</div>
+                  </Card.Header>
+
+                  <Card.Meta textAlign="right">
+                    <Icon
                       name="check circle"
                       color="green"
                       onClick={() => this.updateTask(item._id)}
                     />
                     <span style={{ paddingRight: 10 }}>Done</span>
-                    <button
+                    <Icon
                       name="undo"
                       color="yellow"
                       onClick={() => this.undoTask(item._id)}
                     />
                     <span style={{ paddingRight: 10 }}>Undo</span>
-                    <button
+                    <Icon
                       name="delete"
                       color="red"
                       onClick={() => this.deleteTask(item._id)}
                     />
                     <span style={{ paddingRight: 10 }}>Delete</span>
-                  </div>
-                </div>
-              </div>
+                  </Card.Meta>
+                </Card.Content>
+              </Card>
             );
-          })
+          }),
         });
       } else {
         this.setState({
-          items: []
+          items: [],
         });
       }
     });
   };
 
-  updateTask = id => {
+  updateTask = (id) => {
     axios
       .put(endpoint + "/api/task/" + id, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         this.getTask();
       });
   };
 
-  undoTask = id => {
+  undoTask = (id) => {
     axios
       .put(endpoint + "/api/undoTask/" + id, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         this.getTask();
       });
   };
 
-  deleteTask = id => {
+  deleteTask = (id) => {
     axios
       .delete(endpoint + "/api/deleteTask/" + id, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         this.getTask();
       });
   };
+
   render() {
     return (
       <div>
         <div className="row">
-          <div className="header" as="h2">
+          <Header className="header" as="h2">
             TO DO LIST
-          </div>
+          </Header>
         </div>
         <div className="row">
-          <form onSubmit={this.onSubmit}>
-            <input
+          <Form onSubmit={this.onSubmit}>
+            <Input
               type="text"
               name="task"
               onChange={this.onChange}
@@ -156,10 +163,10 @@ class ToDoList extends Component {
               placeholder="Create Task"
             />
             {/* <Button >Create Task</Button> */}
-          </form>
+          </Form>
         </div>
         <div className="row">
-          <div>{this.state.items}</div>
+          <Card.Group>{this.state.items}</Card.Group>
         </div>
       </div>
     );
