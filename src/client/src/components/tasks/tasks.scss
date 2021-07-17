@@ -1,0 +1,22 @@
+
+.task {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	.task__title {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		input {
+			margin: 1rem;
+		}
+
+		h3 {
+			margin-top: 0;
+			margin-left: 2rem;
+		}
+	}
+}
