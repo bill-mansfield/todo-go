@@ -2,41 +2,53 @@ import axios from "axios"
 import { taskProps } from "../components/tasks"
 
 export const fetchData = async () => {
-	axios.get(process.env.REACT_APP_ENDPOINT + "/api/task").then((res) => {
-		console.log(res.data)
-		return(res.data)
-	})
-}
-
-export const toggleTaskStatus = (task: taskProps): void => {
-	if (task.status === false) {
-		updateTask(task)
-	} else {
-		undoTask(task)
+	try { 
+		const response = await axios.get(process.env.REACT_APP_ENDPOINT + "/api/task")
+		return response.data
+	}
+	catch (err) {
+		console.error("Error: fetchData()")
 	}
 }
 
-export const updateTask = (task: taskProps): void => {
-	axios.put(process.env.REACT_APP_ENDPOINT + "/api/task/" + task._id, {
-		headers: {
-			"Content-Type": "application/x-www-form-urlencoded",
-		},
-	})
-	.then((res) => {
-		console.log(res.data)
-		fetchData()
-	});
-}
-
-export const undoTask = (task: taskProps): void => {
-	axios
-		.put(process.env.REACT_APP_ENDPOINT + "/api/undoTask/" + task._id, {
+export const updateTask = async (task: taskProps) => {
+	try {
+		const response = await axios.put(process.env.REACT_APP_ENDPOINT + "/api/task/" + task._id, {
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
 		})
-		.then((res) => {
-			console.log(res);
-			fetchData()
-		});
+		return response.data
+	} catch (err) {
+		console.error("Error: updateTask()")
+	}
+	
+}
+
+export const undoTask = async (task: taskProps) => {
+	try { 
+		const response = await axios.put(process.env.REACT_APP_ENDPOINT + "/api/undoTask/" + task._id, {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+		})
+		return response.data
+	}
+	catch (err) {
+		console.error("Error: undoTask()")
+	}
 };
+
+export const deleteTask = async (task: taskProps) => {
+	try { 
+		const response = await axios.put(process.env.REACT_APP_ENDPOINT + "/api/deleteTask/" + task._id, {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			}
+		})
+		return response.data
+	}
+	catch (err) {
+		console.error("Error: deleteTask()")
+	}
+}
