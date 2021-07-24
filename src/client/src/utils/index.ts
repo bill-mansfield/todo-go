@@ -52,3 +52,17 @@ export const deleteTask = async (task: taskProps) => {
 		console.error("Error: deleteTask()")
 	}
 }
+
+export const createTask = async (task: any) => {
+	try { 
+		const response = await axios.post(process.env.REACT_APP_ENDPOINT + "/api/task", task, {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			}
+		})
+		return response.data
+	}
+	catch (err) {
+		console.error("Error: createTask()")
+	}
+}

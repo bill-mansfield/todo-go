@@ -4,6 +4,7 @@ import { Icon } from "semantic-ui-react"
 import { UpdateCheckbox } from "../updateTask"
 import { DeleteButton } from "../deleteTask"
 import './tasks.scss'
+import { CreateForm } from "../createTask";
 
 export type taskProps = {
   _id: string
@@ -25,6 +26,8 @@ export const Tasks: React.FC = () => {
 
   return (
     <>
+      <h1>What to do, what to do</h1>
+      <CreateForm getTasksfn={getTasks} />
       {tasks ? tasks.map((task: taskProps, i: number) => {
         return (
           <div key={i} className="task" style={{ backgroundColor: task.status ? 'green' : 'yellow' }}>
@@ -34,7 +37,6 @@ export const Tasks: React.FC = () => {
               <h3>{task.task}</h3>
             </div>
             <div className="task__meta">
-              <span style={{ paddingRight: 10 }}>Done</span>
               <DeleteButton getTasksfn={getTasks} taskData={task}>
                 <Icon
                   name="delete"
