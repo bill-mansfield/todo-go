@@ -80,7 +80,6 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 
 // TaskComplete update task route
 func TaskComplete(w http.ResponseWriter, r *http.Request) {
-
 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
@@ -93,7 +92,6 @@ func TaskComplete(w http.ResponseWriter, r *http.Request) {
 
 // UndoTask undo the complete task route
 func UndoTask(w http.ResponseWriter, r *http.Request) {
-
 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
@@ -114,7 +112,6 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	deleteOneTask(params["id"])
 	json.NewEncoder(w).Encode(params["id"])
 	// json.NewEncoder(w).Encode("Task not found")
-
 }
 
 // DeleteAllTask delete all tasks route
@@ -124,7 +121,18 @@ func DeleteAllTask(w http.ResponseWriter, r *http.Request) {
 	count := deleteAllTask()
 	json.NewEncoder(w).Encode(count)
 	// json.NewEncoder(w).Encode("Task not found")
+}
 
+// DeleteAllTask delete all tasks route
+func DeleteCompleted(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	params := mux.Vars(r)
+	deleteManyTask(params["id"])
+	json.NewEncoder(w).Encode(params["id"])
+	// json.NewEncoder(w).Encode("Task not found")
 }
 
 // get all task from the DB and return it
@@ -215,4 +223,19 @@ func deleteAllTask() int64 {
 
 	fmt.Println("Deleted Document", d.DeletedCount)
 	return d.DeletedCount
+}
+
+// delete all specified tasks
+func deleteManyTask(tasks string) {
+	fmt.Println(tasks)
+	id, _ := primitive.ObjectIDFromHex(tasks)
+	filter := bson.M{"_id": id}
+	d, err := collection.DeleteOne(context.Background(), filter)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Deleted Documents", d.DeletedCount)
+
 }

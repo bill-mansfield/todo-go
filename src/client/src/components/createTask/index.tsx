@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input } from "semantic-ui-react";
 import { taskProps } from "../tasks"
-import { createTask } from "../../utils"
+import { createTask } from "../../utils/api"
 import { useForm } from "../../hooks/useForm";
 
 export type createProps = {
@@ -12,18 +12,16 @@ export const CreateForm: React.FC<createProps> = ({ getTasksfn }) => {
 
 	const initialState = {}
 
-	// getting the event handlers from our custom hook
 	const { onChange, onSubmit, values } = useForm(
 		userCallback,
 		initialState
 	)
 
-	// a submit function that will execute upon form submission
 	async function userCallback() {
-		// send "values" to database
-		createTask(values).then(() => {getTasksfn()})
+		createTask(values).then(() => {
+			getTasksfn()
+		})
 	}
-	console.log(values)
 
   return (
 		<Form  
@@ -38,7 +36,6 @@ export const CreateForm: React.FC<createProps> = ({ getTasksfn }) => {
 				placeholder="Create Task"
 				required
 			/>
-			<button type='submit'>Create Task</button>
 		</Form>
   )
 }

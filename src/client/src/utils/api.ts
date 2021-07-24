@@ -41,7 +41,7 @@ export const undoTask = async (task: taskProps) => {
 
 export const deleteTask = async (task: taskProps) => {
 	try { 
-		const response = await axios.put(process.env.REACT_APP_ENDPOINT + "/api/deleteTask/" + task._id, {
+		const response = await axios.delete(process.env.REACT_APP_ENDPOINT + "/api/deleteTask/" + task._id, {
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
 			}
@@ -50,6 +50,34 @@ export const deleteTask = async (task: taskProps) => {
 	}
 	catch (err) {
 		console.error("Error: deleteTask()")
+	}
+}
+
+export const deleteAllTask = async () => {
+	try { 
+		const response = await axios.delete(process.env.REACT_APP_ENDPOINT + "/api/deleteAllTask", {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			}
+		})
+		return response.data
+	}
+	catch (err) {
+		console.error("Error: deleteAllTask()")
+	}
+}
+
+export const deleteCompleted = async () => {
+	try { 
+		const response = await axios.delete(process.env.REACT_APP_ENDPOINT + "/api/deleteCompleted", {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			}
+		})
+		return response.data
+	}
+	catch (err) {
+		console.error("Error: deleteCompleted()")
 	}
 }
 

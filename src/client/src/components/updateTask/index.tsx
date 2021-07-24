@@ -1,5 +1,5 @@
 import React from "react"
-import { updateTask, undoTask} from "../../utils"
+import { updateTask, undoTask} from "../../utils/api"
 import { taskProps} from "../tasks"
 import "./updateTask.scss"
 

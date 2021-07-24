@@ -1,5 +1,5 @@
 import React from "react"
-import { deleteTask } from "../../utils"
+import { deleteTask } from "../../utils/api"
 import { taskProps} from "../tasks"
 
 export type deleteProps = {

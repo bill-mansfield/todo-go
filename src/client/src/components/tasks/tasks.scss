@@ -4,14 +4,30 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	margin-top: 0.5em;
+	border-radius: 0.5em;
 
 	.task__title {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 
-		input {
+		input[type='checkbox'] {
+			width: 1.7rem !important;
+			height: 1.7rem !important;
+			appearance: none;
+			box-shadow: none;
+			font-size: 1em;
+			text-align: center;
+			line-height: 1.7rem;
+			background: #233D4D;
 			margin: 1rem;
+			border-radius: 0.5em;
+		}
+		
+		input[type='checkbox']:checked:after {
+			content: '✔';
+			color: white;
 		}
 
 		h3 {
@@ -19,4 +35,11 @@
 			margin-left: 2rem;
 		}
 	}
+}
+
+.heading {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }

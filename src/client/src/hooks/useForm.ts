@@ -10,6 +10,7 @@ export const useForm = (callback: any, initialState = {}) => {
 
 	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		event.currentTarget.reset();
 		await callback()
 	}
 
