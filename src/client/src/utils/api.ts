@@ -67,9 +67,9 @@ export const deleteAllTask = async () => {
 	}
 }
 
-export const deleteCompleted = async () => {
+export const deleteCompleted = async (tasks: string[]) => {
 	try { 
-		const response = await axios.delete(process.env.REACT_APP_ENDPOINT + "/api/deleteCompleted", {
+		const response = await axios.delete(process.env.REACT_APP_ENDPOINT + "/api/deleteCompleted/" + tasks, {
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
 			}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/bill-mansfield/todo-go/src/server/models"
 	"github.com/gorilla/mux"
@@ -130,8 +131,8 @@ func DeleteCompleted(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	params := mux.Vars(r)
-	deleteManyTask(params["id"])
-	json.NewEncoder(w).Encode(params["id"])
+	deleteManyTask(params["ids"])
+	json.NewEncoder(w).Encode(params["ids"])
 	// json.NewEncoder(w).Encode("Task not found")
 }
 
@@ -227,15 +228,30 @@ func deleteAllTask() int64 {
 
 // delete all specified tasks
 func deleteManyTask(tasks string) {
-	fmt.Println(tasks)
-	id, _ := primitive.ObjectIDFromHex(tasks)
-	filter := bson.M{"_id": id}
-	d, err := collection.DeleteOne(context.Background(), filter)
 
-	if err != nil {
-		log.Fatal(err)
+	//splits commas separated string (tasks) into array of hex strings
+	ts := strings.Split(tasks, ",")
+
+	//loops through array of hex strings
+	for i, s := range ts {
+		// prints index and hex string
+		fmt.Println(i, s)
+
+		// Converts hex strings into objectID
+		// returns object id into 'ss', return something else into '_' ????
+		ss, _ := primitive.ObjectIDFromHex(s)
+
+		// Calls DB to delete each doc one at a time
+		collection.DeleteOne(context.Background(), bson.M{"_id": ss})
 	}
+	// id, _ := primitive.ObjectIDFromHex(tasks)
+	// filter := bson.M{"_id": id}
+	// d, err := collection.DeleteMany(context.Background(), filter)
 
-	fmt.Println("Deleted Documents", d.DeletedCount)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// fmt.Println("Deleted Documents", d.DeletedCount)
 
 }

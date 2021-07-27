@@ -1,5 +1,5 @@
 import React from "react"
-import { deleteAllTask, deleteTask } from "../../utils/api"
+import { deleteAllTask, deleteTask, fetchData, deleteCompleted } from "../../utils/api"
 import { taskProps} from "../tasks"
 import "./delete.scss"
 
@@ -16,8 +16,19 @@ export const DeleteAllButton: React.FC<deleteAllProps> = ({ deleteType, getTasks
 		await deleteAllTask().then(() => {getTasksfn()})
   }
 
-	const deleteCompleted = async () => {
-		// await 
+	const deleteCompletedTasks = async () => {
+		let tasks = await fetchData()
+		let taskArr: string[] = []
+		
+		if (tasks) {
+			tasks.forEach((task: taskProps) => {
+				if (task.status === true) {
+					taskArr.push(task._id)
+				}
+			})
+			await deleteCompleted(taskArr).then(() => {getTasksfn()})
+		}
+
 	}
 
   return (
@@ -25,8 +36,10 @@ export const DeleteAllButton: React.FC<deleteAllProps> = ({ deleteType, getTasks
 			switch(deleteType) {
 				case 'deleteAll':
 					deleteAll()
+					break
 				case 'deleteCompleted':
-					deleteCompleted()	
+					deleteCompletedTasks()	
+					break
 			}}}>
 			{children}
 		</button>
